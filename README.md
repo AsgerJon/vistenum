@@ -1,0 +1,2 @@
+# vistenum
+Simplified enum metaclass
