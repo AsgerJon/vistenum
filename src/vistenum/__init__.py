@@ -1,4 +1,4 @@
-"""The 'vistenum' package provides an opinionated 'enum' implementation. """
+"""The 'vistenum' package provides an opinionated 'enum' implementation."""
 #  AGPL-3.0 license
 #  Copyright (c) 2024 Asger Jon Vistisen
 from __future__ import annotations
