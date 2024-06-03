@@ -6,6 +6,7 @@ on:
 permissions:
   contents: write
   actions: write
+  id-token: write  # Add this line
 
 jobs:
   build-and-deploy:
