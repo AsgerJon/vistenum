@@ -9,12 +9,10 @@ import time
 from typing import Callable
 import unittest
 
-from tester_class_01 import TesterClass
-
 
 def tester00() -> int:
   """Hello World!"""
-  stuff = [os, sys, ]
+  stuff = [os, sys, 'Hello World!']
   for item in stuff:
     try:
       print(item)
@@ -26,32 +24,20 @@ def tester00() -> int:
   return 1
 
 
-def tester01() -> int:
-  """Test of the BaseEnum class"""
-  # TUE = TesterClass.Tuesday
-  # TUE = 'tuesday'
-  TUE = 1
-  for item in TesterClass:
-    print(item, end=' | ')
-    print('Tuesday?: %s' % ('YES' if item == TUE else 'NO'))
-  print(TesterClass['tuesday'])
-  print(TesterClass['Tuesday'])
-  print(TesterClass('Tuesday'))
-
-
-def main(callMeMaybe: Callable) -> None:
+def main(*args: Callable) -> None:
   """Main Tester Script"""
   tic = time.perf_counter_ns()
   print('Running python script located at: \n%s' % sys.argv[0])
   print('Started at: %s' % time.ctime())
   print(77 * '-')
   retCode = 0
-  try:
-    retCode = callMeMaybe()
-  except BaseException as exception:
-    print('Exception: %s' % exception)
-    retCode = -1
-    raise exception
+  for callMeMaybe in args:
+    print('\nRunning: %s\n' % callMeMaybe.__name__)
+    try:
+      retCode = callMeMaybe()
+    except BaseException as exception:
+      print('Exception: %s' % exception)
+      retCode = -1
   retCode = 0 if retCode is None else retCode
   print(77 * '-')
   print('Return Code: %s' % retCode)
@@ -64,14 +50,8 @@ def main(callMeMaybe: Callable) -> None:
     print('Runtime: %d milliseconds' % (int(toc * 1e-06),))
 
 
-def tester02() -> int:
-  """Test of example package"""
-  from vistenum.example import main as exampleMain
-  return exampleMain()
-
-
-def unitTrash() -> int:
-  """I HATE unittest"""
+def runTests() -> int:
+  """Runs the tests"""
   loader = unittest.TestLoader()
   suite = loader.discover(start_dir='tests', pattern='test*.py')
 
@@ -81,5 +61,4 @@ def unitTrash() -> int:
 
 
 if __name__ == '__main__':
-  main(unitTrash)
-  main(tester02)
+  main(runTests, )
