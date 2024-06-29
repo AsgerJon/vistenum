@@ -7,15 +7,14 @@ import os
 import sys
 import time
 from typing import Callable
-
-from icecream import ic
+import unittest
 
 from tester_class_01 import TesterClass
 
 
 def tester00() -> int:
   """Hello World!"""
-  stuff = [os, sys, ic, ]
+  stuff = [os, sys, ]
   for item in stuff:
     try:
       print(item)
@@ -35,9 +34,9 @@ def tester01() -> int:
   for item in TesterClass:
     print(item, end=' | ')
     print('Tuesday?: %s' % ('YES' if item == TUE else 'NO'))
-  ic(TesterClass['tuesday'])
-  ic(TesterClass['Tuesday'])
-  ic(TesterClass('Tuesday'))
+  print(TesterClass['tuesday'])
+  print(TesterClass['Tuesday'])
+  print(TesterClass('Tuesday'))
 
 
 def main(callMeMaybe: Callable) -> None:
@@ -65,5 +64,22 @@ def main(callMeMaybe: Callable) -> None:
     print('Runtime: %d milliseconds' % (int(toc * 1e-06),))
 
 
+def tester02() -> int:
+  """Test of example package"""
+  from vistenum.example import main as exampleMain
+  return exampleMain()
+
+
+def unitTrash() -> int:
+  """I HATE unittest"""
+  loader = unittest.TestLoader()
+  suite = loader.discover(start_dir='tests', pattern='test*.py')
+
+  runner = unittest.TextTestRunner(verbosity=2)
+  res = runner.run(suite)
+  return 0 if res.wasSuccessful() else 1
+
+
 if __name__ == '__main__':
-  main(tester01)
+  main(unitTrash)
+  main(tester02)

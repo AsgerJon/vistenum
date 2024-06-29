@@ -76,6 +76,7 @@
     <inspection_tool class="PySimplifyBooleanCheckInspection" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES" />
     <inspection_tool class="PySingleQuotedDocstringInspection" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="ERRORS_ATTRIBUTES" />
     <inspection_tool class="PyUnusedLocalInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyyamlLoadInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="TaskProblemsInspection" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES" />
   </profile>
 </component>

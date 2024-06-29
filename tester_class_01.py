@@ -3,16 +3,16 @@
 #  Copyright (c) 2024 Asger Jon Vistisen
 from __future__ import annotations
 
-from vistenum import BaseEnum, Member
+from vistenum import VistEnum, auto
 
 
-class TesterClass(BaseEnum):
+class TesterClass(VistEnum):
   """TesterClass"""
 
-  Monday = Member(0)
-  Tuesday = Member(1)
-  Wednesday = Member(2)
-  Thursday = Member(3)
-  Friday = Member(4)
-  Saturday = Member(5)
-  Sunday = Member(6)
+  Monday = auto('Monday')
+  Tuesday = auto('Tuesday')
+  Wednesday = auto('Wednesday')
+  Thursday = auto('Thursday')
+  Friday = auto('Friday')
+  Saturday = auto('Saturday')
+  Sunday = auto('Sunday')
