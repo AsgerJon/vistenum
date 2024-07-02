@@ -9,6 +9,10 @@ import time
 from typing import Callable
 import unittest
 
+from pyperclip import copy
+
+from vistenum import EnumBox, VistEnum, auto
+
 
 def tester00() -> int:
   """Hello World!"""
@@ -22,6 +26,71 @@ def tester00() -> int:
   else:
     return 0
   return 1
+
+
+def tester01() -> int:
+  """Getting AttributeError text"""
+  lmao = type('lmao', (object,), {})
+  try:
+    lmao().__instance_get__
+  except AttributeError as exception:
+    copy(str(exception))
+    return 0
+  return 1
+
+
+def tester02() -> int:
+  """Getting TypeError text"""
+  box = EnumBox()
+  try:
+    box.__instance_get__()
+  except Exception as exception:
+    print(str(exception))
+    return 0
+  return 1
+
+
+class Hand(VistEnum):
+  """Hand enumeration"""
+  LEFT = auto()
+  RIGHT = auto()
+
+
+class Tester:
+  """Testing the EnumBox class"""
+
+  hand1 = EnumBox[Hand](Hand.RIGHT)
+  hand2 = EnumBox[Hand](Hand.LEFT)
+  hand3 = EnumBox[Hand](0)
+  hand4 = EnumBox[Hand](1)
+  hand5 = EnumBox[Hand]('right')
+
+  def __str__(self, ) -> str:
+    hands = [self.hand1, self.hand2, self.hand3, self.hand4]
+    hands = '\n  '.join([str(hand) for hand in hands])
+    return """Tester with hands: \n  %s""" % hands
+
+
+def tester03() -> int:
+  """Testing the EnumBox class"""
+  tester = Tester()
+  print(type(Hand))
+  try:
+    print(tester)
+  except BaseException as exception:
+    print('Exception: %s' % exception)
+    return 1
+  return 0
+
+
+def runTests() -> int:
+  """Runs the tests"""
+  loader = unittest.TestLoader()
+  suite = loader.discover(start_dir='tests', pattern='test*.py')
+
+  runner = unittest.TextTestRunner(verbosity=2)
+  res = runner.run(suite)
+  return 0 if res.wasSuccessful() else 1
 
 
 def main(*args: Callable) -> None:
@@ -50,15 +119,5 @@ def main(*args: Callable) -> None:
     print('Runtime: %d milliseconds' % (int(toc * 1e-06),))
 
 
-def runTests() -> int:
-  """Runs the tests"""
-  loader = unittest.TestLoader()
-  suite = loader.discover(start_dir='tests', pattern='test*.py')
-
-  runner = unittest.TextTestRunner(verbosity=2)
-  res = runner.run(suite)
-  return 0 if res.wasSuccessful() else 1
-
-
 if __name__ == '__main__':
-  main(runTests, )
+  main(runTests, tester03)

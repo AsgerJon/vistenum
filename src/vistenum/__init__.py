@@ -6,4 +6,5 @@ from __future__ import annotations
 from ._enum_object import EnumObject
 from ._auto import auto
 from ._enum_space import EnumSpace
-from ._vist_enum import VistEnum
+from ._vist_enu_meta import VistEnuMeta, VistEnum
+from ._enum_box import EnumBox

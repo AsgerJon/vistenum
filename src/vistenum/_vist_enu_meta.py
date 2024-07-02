@@ -1,4 +1,4 @@
-"""The VistEnum class is the base class for enum classes."""
+"""The VistEnuMeta class is the base class for enum classes."""
 #  AGPL-3.0 license
 #  Copyright (c) 2024 Asger Jon Vistisen
 from __future__ import annotations
@@ -8,10 +8,13 @@ import sys
 from attribox import AttriBox
 from vistutils.metas import Bases, AbstractMetaclass
 from vistutils.parse import maybe
+from vistutils.text import monoSpace
 from vistutils.waitaminute import typeMsg
 
 from vistenum import EnumObject
 from vistenum._enum_space import EnumSpace
+
+from typing import TYPE_CHECKING
 
 if sys.version_info.minor < 11:
   from typing_extensions import Self
@@ -44,8 +47,8 @@ class _Flag:
     return 'True' if self else 'False'
 
 
-class _VistEnum(AbstractMetaclass):
-  """The VistEnum class is the base class for enum classes."""
+class VistEnuMeta(AbstractMetaclass):
+  """VistEnuMeta is the base class for enum classes."""
 
   __allow_instantiation__ = True
   __iter_contents__ = None
@@ -147,11 +150,22 @@ class _VistEnum(AbstractMetaclass):
     if not args:
       e = """Received no arguments!"""
       raise ValueError(e)
+    enumObject = None
     for arg in args:
+      if isinstance(arg, EnumObject):
+        if isinstance(arg, cls):
+          if TYPE_CHECKING:
+            assert isinstance(arg, EnumObject)
+          return arg
+        enumObject = arg
       if isinstance(arg, int):
         return cls._recognizeIndex(arg)
       if isinstance(arg, str):
         return cls._recognizeKey(arg)
+    if enumObject is not None:
+      e = """The enum object: '%s' is not a member of the enumeration: 
+      '%s'."""
+      raise TypeError(monoSpace(e % (enumObject.name, cls.__name__)))
     e = typeMsg('index', args[0], int)
     raise TypeError(e)
 
@@ -181,7 +195,13 @@ class _VistEnum(AbstractMetaclass):
     """Returns the name of the enumeration."""
     return cls.__name__
 
+  def __instancecheck__(cls, instance) -> bool:
+    """Returns True if the instance is an instance of the enumeration."""
+    if issubclass(type(instance), cls):
+      return True
+    return False
 
-class VistEnum(metaclass=_VistEnum):
+
+class VistEnum(metaclass=VistEnuMeta):
   """The VistEnum class is the base class for enum classes."""
   pass
